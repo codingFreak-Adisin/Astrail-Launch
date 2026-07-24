@@ -1,0 +1,126 @@
+Astrail outreach feedback
+Gmail reply notes | 14-15 July 2026
+Summary: The strongest replies validate third-party SaaS OAuth as the wedge. The recurring pain is not generating tools. It is token lifecycle, permission boundaries, revocation, retries, and proving what an agent did with access.
+Key product lessons
+Lead with per-user OAuth infrastructure for third-party SaaS integrations such as GitHub, Slack, Google, and Stripe.
+
+
+Bundle token storage, refresh rotation, revocation, and audit together. Token storage alone is not enough.
+
+
+Make permissions composable per user, per agent, and per scope rather than only per deployment.
+
+
+Position Astrail as the hosted auth and runtime boundary. OpenAPI-to-MCP generation is the onboarding path.
+
+
+Keep memory and context systems separate. Astrail can sit in front of their tools without centralizing private memory.
+
+
+Personalize outreach to the recipient's actual project. Generic mass outreach damages trust.
+Highest-priority follow-ups
+Reply to Arnaud and schedule the requested technical call about Kuberna.
+
+
+Send Josh the token-lifecycle demo you promised when it is stable.
+Reply to Drake/Aric with Astrail's boundary between local context and hosted auth.
+Give Wonsuk a concrete live demo using a real API integration.
+Attend the already-scheduled meeting with Vivek and prepare a five-minute product walkthrough.
+Strong technical validation
+Arnaud Kennedy KAWACU RUGIRANEZA
+Signal: Strong interest and requested call
+OAuth, per-user permissions, retries, audit trails, and key rotation are meaningful time sinks.
+Kuberna's API tool-calling layer is still manual per deployment.
+Wants to know whether permissions compose per agent, user, and scope.
+
+
+Vishisht Mishra
+Signal: Strong problem validation, unavailable to test now
+Built bearer-token auth for an MCP server himself.
+Token handling and admin API security consumed substantial time and still need improvement.
+Cannot commit to testing during his final year but wants to stay connected.
+
+Josh
+Signal: Strong validation, no current fit, demo permission granted
+The OAuth screen is easy. Scopes, token handling, revocation, audit logs, and expected-use enforcement are hard.
+If choosing one area, he would bundle token handling with revocation and audit.
+The key question is what the agent did with access, not merely whether OAuth worked.
+
+
+Nitin Singh
+
+Signal: High-quality technical validation with a narrower wedge
+
+Within one Entra tenant, OBO to internal APIs is mostly one-time plumbing.
+
+Third-party SaaS has no universal OBO exchange, so teams need per-user vaults, consent, refresh rotation, and revocation.
+
+
+Recommended leading with third-party SaaS OAuth instead of generic agent OAuth.
+
+Mir Arshad Ali Talpur
+Signal: Strong validation and technical curiosity
+Calls secure multi-tenant OAuth one of the biggest time sinks.
+Most teams either build the layer internally or use a dedicated product.
+Interested in Astrail's token refresh and OAuth scope enforcement.
+
+
+
+Drake Ewing / Aric
+Signal: Problem validated and potentially complementary
+Confirms OAuth, per-user permissions, and audit are real work.
+Engram wants memory to remain local and cryptographically controlled.
+A hosted third-party auth layer may complement Engram if it does not centralize memory.
+
+Interested leads
+Vivek Chand
+Signal: Meeting requested and scheduled
+Asked for a 30-minute meeting to understand Astrail and discuss collaboration.
+A calendar invitation is already present in Gmail.
+
+Iury Cordeiro
+Signal: Positive and willing to test
+Liked the idea and offered to test Astrail.
+You already sent astrail.dev and asked for honest feedback on confusion or breakage.
+
+Wonsuk Choi
+Signal: No current pain, open to testing and partnership later
+Domain-experts is a static SKILL.md library with no live agent-to-API execution layer.
+OAuth and retries are not current problems for that project.
+Open to feedback, a live integration test, and possible partnership as the project grows.
+
+Manish
+Signal: Light interest
+Said Astrail sounds interesting and will check it out.
+
+Not now and do not contact
+Sean Yao
+Signal: Not now
+Currently focused on core product features and may consider Astrail later.
+
+Umputun
+Signal: Negative response and explicit stop request
+Considered the outreach unrelated mass email.
+Explicitly asked for no further contact. You apologized.
+
+
+
+Roman_PlumPix
+•19h ago
+I'd say the cost grows less with the number of APIs and more with the number and complexity of integrations. One clean integration can be easy, but each additional system brings its own auth flows, rate limits, field mapping, error formats, retries, permissions, versioning and monitoring. The real cost is often not just building the connector, but maintaining and debugging all the customer-specific edge cases around it.
+
+
+
+Calm-Dimension3422
+•1d ago
+A third of engineering time is not crazy if “integration” includes all the glue around the API, not just writing the connector.
+The expensive parts are usually:
+auth and token refresh edge cases
+field mapping when the customer’s CRM is weird
+rate limits, retries, and partial failures
+webhook idempotency so one event does not create two actions
+permissions: what the agent can read, draft, write, or send
+audit logs a human can understand later
+migration when the customer changes tools or schema
+The number worth measuring is not just connector build time. Track integration work as setup, maintenance, support/debugging, and customer-specific exceptions. Those are different cost centers.
+A clean rule of thumb: if every new customer needs custom mapping, custom auth handling, or custom approval logic, you do not have an agent product yet. You have a services business with an agent inside it. That can still be a good business, but the margin math is totally different.
